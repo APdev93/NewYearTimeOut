@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="css/fireworks.css" rel="stylesheet" />
 		<style>
 			body {
 				display: flex;
@@ -11,7 +12,7 @@
 				height: 100vh;
 				margin: 0;
 				overflow: hidden;
-				background-color: #111;
+				background-color: black;
 				color: #fff;
 				flex-direction: column;
 				font-family: "Arial", sans-serif;
@@ -29,7 +30,9 @@
 			}
 
 			.countdown {
+				position: absolute;
 				display: flex;
+				z-index: 100;
 			}
 
 			.countdown-item {
@@ -39,7 +42,7 @@
 
 			span {
 				display: block;
-				font-size: 24px;
+				font-size: 50px;
 				font-weight: bold;
 				/* Tambahkan text shadow dengan animasi pergantian warna */
 				text-shadow: 10px 10px 10px;
@@ -89,20 +92,22 @@
 				border-radius: 50%;
 				animation: fireworks 1s ease-out;
 			}
+
+			#last10sec {
+				position: absolute;
+				top: 200px;
+				background-color: transparent;
+				z-index: 100;
+			}
 			#hpp {
-				display: none;
-				font-size: 30px;
-				margin-bottom: 50px;
+				position: absolute;
+				top: 50px;
+				z-index: 100;
 			}
 		</style>
 		<title>New Year Countdown</title>
 	</head>
 	<body>
-		<video id="video-background" autoplay muted loop>
-			<source src="./api.mp4" type="video/mp4" />
-			Your browser does not support the video tag.
-		</video>
-
 		<div style="margin-bottom: 200px !important" id="last10sec">
 			<div
 				class="countdown-item"
@@ -110,120 +115,38 @@
 				<span id="last10" style="font-size: 100px">00</span>
 			</div>
 		</div>
-		<span id="hpp">HAPPY NEW YEARS</span>
+		<div id="hpp">
+			<h1>Hitung Mundur Tahun Baru</h1>
+		</div>
 
 		<div class="countdown" id="countdown">
 			<div class="countdown-item">
 				<span id="days">00</span>
-				<span>HARI</span>
 			</div>
 			<div class="countdown-item">
 				<span>:</span>
 			</div>
 			<div class="countdown-item">
 				<span id="hours">00</span>
-				<span>JAM</span>
 			</div>
 			<div class="countdown-item">
 				<span>:</span>
 			</div>
 			<div class="countdown-item">
 				<span id="minutes">00</span>
-				<span>MENIT</span>
 			</div>
 			<div class="countdown-item">
 				<span>:</span>
 			</div>
 			<div class="countdown-item">
 				<span id="seconds">00</span>
-				<span>DETIK</span>
 			</div>
 		</div>
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				const countdownElement = document.getElementById("countdown");
-				const last10SecElement = document.getElementById("last10sec");
-				const fireworksContainer = document.body;
-				const vidBg = document.getElementById("video-background");
-				const hpp = document.getElementById("hpp");
-
-				function updateCountdown() {
-					const now = new Date().getTime();
-					const newYear = new Date(
-						"January 1, " + (new Date().getFullYear() + 1) + " 00:00:00",
-					).getTime();
-					const tenSeconds = new Date(
-						"January 1, " + new Date().getFullYear() + " 00:00:10",
-					).getTime();
-
-					const distance = newYear - now;
-
-					const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-					const hours = Math.floor(
-						(distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-					);
-					const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-					const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-					document.getElementById("days").innerText = formatTime(days);
-					document.getElementById("hours").innerText = formatTime(hours);
-					document.getElementById("minutes").innerText = formatTime(minutes);
-					document.getElementById("seconds").innerText = formatTime(seconds);
-					let hari = formatTime(days);
-					let jam = formatTime(hours);
-					let menit = formatTime(minutes);
-					let detik = formatTime(seconds);
-
-					if (hari == "00" && jam == "01" && menit == "01" && detik < "11") {
-						last10SecElement.style.display = "block";
-						document.getElementById("last10").innerText = formatTime(seconds);
-					} else {
-						last10SecElement.style.display = "none";
-					}
-
-					if (hari == "00" && jam == "00") {
-						hpp.style.display = "block";
-						vidBg.style.visibility = "visible";
-					} else {
-						vidBg.style.visibility = "hidden";
-						hpp.style.display = "none";
-					}
-					if (hari == "00" && jam == "01" && menit == "01" && detik < "11") {
-						for (let i = 0; i < 100; i++) {
-							createFirework();
-						}
-					}
-				}
-
-				function formatTime(time) {
-					return time < 10 ? "0" + time : time.toString().slice(-2);
-				}
-
-				function createFirework() {
-					const firework = document.createElement("div");
-					firework.classList.add("firework");
-
-					// Tentukan posisi acak untuk kembang api
-					firework.style.left = Math.random() * window.innerWidth + "px";
-					firework.style.top = Math.random() * window.innerHeight + "px";
-
-					// Atur warna acak untuk kembang api
-					firework.style.backgroundColor = `hsla(${
-						Math.random() * 360
-					}, 100%, 50%, 1)`;
-
-					fireworksContainer.appendChild(firework);
-
-					// Hapus elemen kembang api setelah animasi selesai
-					firework.addEventListener("animationend", function () {
-						firework.remove();
-					});
-				}
-
-				updateCountdown();
-				setInterval(updateCountdown, 1000);
-			});
-		</script>
+		<aside id="library">
+			<img src="images/big-glow.png" id="big-glow" />
+			<img src="images/small-glow.png" id="small-glow" />
+		</aside>
+		<script src="third_party/requestanimframe.js"></script>
+		<script src="js/fireworks.js" type="text/javascript" charset="utf-8"></script>
 	</body>
-  </html>
-  
+</html>
