@@ -1,0 +1,14 @@
+
+html,
+body {
+	overflow: hidden;
+}
+
+#library {
+	display: none;
+	position: absolute;
+}
+
+canvas {
+	-webkit-transform: translateZ(0);
+}
